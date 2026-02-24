@@ -42,7 +42,3 @@ RainFall-Prediction/
 └── requirements.txt  
 ```
 
-
-
-**Ashish Kumar**
-Computer Science Student | Cybersecurity & Machine Learning Enthusiast
