@@ -1,10 +1,10 @@
 | Current Column | Suggested Full Name (GitHub Friendly)                   | Meaning                               |
 | -------------- | ------------------------------------------------------- | ------------------------------------- |
-| `id`           | `record_id`                                             | Unique identifier for each row        |
-| `date`         | `observation_date`                                      | Date of rainfall measurement          |
-| `state_code`   | `state_code`                                            | Numeric/short code for the state      |
-| `state_name`   | `state_name`                                            | Name of the Indian state              |
-| `actual`       | `actual_rainfall_mm`                                    | Actual rainfall recorded (mm)         |
-| `rfs`          | `rainfall_forecast_system` or `forecasted_rainfall_mm`  | Rainfall predicted by forecast system |
-| `normal`       | `normal_rainfall_mm`                                    | Long-term average rainfall            |
-| `deviation`    | `rainfall_deviation_mm` or `rainfall_deviation_percent` | Difference from normal rainfall       |
+|  id            |  record_id                                              | Unique identifier for each row        |
+|  date          |  observation_date                                       | Date of rainfall measurement          |
+|  state_code    |  state_code                                             | Numeric/short code for the state      |
+|  state_name    |  state_name                                             | Name of the Indian state              |
+|  actual        |  actual_rainfall_mm                                     | Actual rainfall recorded (mm)         |
+|  rfs           |  rainfall_forecast_system  or  forecasted_rainfall_mm   | Rainfall predicted by forecast system |
+|  normal        |  normal_rainfall_mm                                     | Long-term average rainfall            |
+|  deviation     |  rainfall_deviation_mm  or  rainfall_deviation_percent  | Difference from normal rainfall       |
