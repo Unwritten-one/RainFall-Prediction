@@ -1,0 +1,29 @@
+# Rainfall Prediction Feature Importance
+
+| Most Important Features      | Important Features | Least Important Features | Not Commonly Used Features |
+| ---------------------------- | ------------------ | ------------------------ | -------------------------- |
+| historical rainfall          | wind speed         | latitude                 | station id                 |
+| lag rainfall                 | wind direction     | longitude                | state name                 |
+| temperature                  | evaporation        | elevation                | region name                |
+| humidity                     | month              | year                     | district name              |
+| atmospheric pressure         | season             |                          | location code              |
+| sea surface temperature      | solar radiation    |                          | index/id columns           |
+| rainfall anomaly (deviation) | cloud cover        |                          | text/categorical labels    |
+|                              |                    |                          | unrelated metadata         |
+
+# Feature Mapping Table
+| Feature                 | Research Paper (Example Source)                                                         |
+| ----------------------- | --------------------------------------------------------------------------------------- |
+| historical rainfall     | Rainfall Prediction Using Machine Learning Models over India (Scientific Reports, 2024) |
+| lag rainfall            | Time Series Rainfall Prediction Using LSTM (2023)                                       |
+| temperature             | Monthly Rainfall Forecasting Using Machine Learning (2020)                              |
+| humidity                | Rainfall Prediction Using Random Forest Algorithm (2021)                                |
+| atmospheric pressure    | Climate-Based Rainfall Prediction Model (2019)                                          |
+| wind speed              | Rainfall Analysis Using Hybrid ML Techniques (2022)                                     |
+| wind direction          | Advanced Weather-Based Rainfall Prediction (2021)                                       |
+| evaporation             | Seasonal Rainfall Prediction Using Climate Variables (2018)                             |
+| sea surface temperature | Prediction of Tropical Pacific Rain Rates (2024)                                        |
+| solar radiation         | Climate Change Impact on Rainfall Prediction (2020)                                     |
+| cloud cover             | Rainfall Analysis Using Deep Learning (2021)                                            |
+| month/season            | Monsoon Rainfall Prediction Using ML Techniques (2022)                                  |
+| latitude/longitude      | Spatial Rainfall Prediction Using Geographical Features (2019)                          |
