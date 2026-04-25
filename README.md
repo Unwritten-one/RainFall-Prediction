@@ -15,8 +15,9 @@ The model is trained on historical rainfall and weather-related features to anal
 
 ## Models Used
 
-* Linear Regression
 * Logistic Regression
+* Support Vector Machine
+* Random Forest
 
 
 ## Key Features Considered
