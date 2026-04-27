@@ -18,6 +18,7 @@ The model is trained on historical rainfall and weather-related features to anal
 * Logistic Regression
 * Support Vector Machine
 * Random Forest
+* KNN
 
 
 ## Key Features Considered
@@ -35,7 +36,6 @@ The model is trained on historical rainfall and weather-related features to anal
 RainFall-Prediction/
 │
 ├── data/        → Dataset files  
-├── notebooks/   → Jupyte notebooks  
 ├── src/         → Source code  
 ├── results/     → Output graphs and results  
 ├── docs/        → Research tables & PDFs  
