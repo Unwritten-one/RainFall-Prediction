@@ -1,0 +1,313 @@
+# 1 IMPORT LIBRARIES
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import StandardScaler
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neighbors import KNeighborsClassifier
+
+from sklearn.metrics import(
+accuracy_score,
+precision_score,
+recall_score,
+f1_score,
+confusion_matrix,
+roc_curve,
+auc
+)
+
+
+
+# ==================================
+# 2 LOAD DATA
+# ==================================
+df=pd.read_csv("daily-rainfall-at-state-level.csv")
+
+print(df.info())
+
+print("\nMissing Values\n")
+
+print(df.isnull().sum())
+
+df=df.dropna()
+
+
+
+# ==================================
+# 3 PREPROCESSING
+# ==================================
+df['date']=pd.to_datetime(df['date'])
+
+df['year']=df['date'].dt.year
+df['month']=df['date'].dt.month
+df['day']=df['date'].dt.day
+
+
+# ==================================
+# 4 EDA
+# ==================================
+
+# Rain vs No Rain Pie
+y_temp=(df['actual']>0).astype(int)
+
+counts=y_temp.value_counts()
+
+plt.figure()
+
+plt.pie(counts,labels=['No Rain','Rain'],autopct='%1.1f%%')
+
+plt.title("Rain vs No Rain")
+
+plt.show()
+
+
+
+# Rainfall Histogram
+plt.figure()
+
+plt.hist(df['actual'], bins=50)
+
+plt.title("Rainfall Distribution")
+
+plt.xlabel("Rainfall")
+
+plt.show()
+
+
+
+# Boxplot
+plt.figure()
+
+plt.boxplot(df['actual'])
+
+plt.title("Rainfall Outliers")
+
+plt.show()
+
+
+
+# Correlation Heatmap
+corr_cols=['actual','rfs','normal','deviation']
+corr=df[corr_cols].corr()
+
+plt.figure()
+
+plt.imshow(corr)
+
+plt.colorbar()
+
+plt.xticks(range(len(corr_cols)),corr_cols)
+
+plt.yticks(range(len(corr_cols)), corr_cols)
+
+plt.title("Correlation Heatmap")
+
+plt.show()
+
+
+
+# Actual vs Forecast
+plt.figure()
+
+plt.scatter(df['actual'],df['rfs'])
+
+plt.xlabel("Actual")
+
+plt.ylabel("Forecast")
+
+plt.title("Actual vs Forecast")
+
+plt.show()
+
+
+
+# ==================================
+# 5 FEATURE ENGINEERING
+# ==================================
+df=df.drop('date',axis=1)
+
+le=LabelEncoder()
+
+df['state_name']=le.fit_transform(df['state_name'])
+
+
+
+# ==================================
+# 6 TARGET
+# ==================================
+y=(df['actual']>0).astype(int)
+
+
+
+# remove leakage
+X=df.drop(['actual','deviation'],axis=1)
+
+
+
+# ==================================
+# 7 DATA SPLIT
+# 70/20/10
+# ==================================
+X_train,X_temp,y_train,y_temp=train_test_split(X,y,test_size=0.30,random_state=42,stratify=y)
+
+X_val,X_test,y_val,y_test=train_test_split(X_temp,y_temp,test_size=1/3,random_state=42,stratify=y_temp)
+
+
+
+# ==================================
+# 8 SCALING
+# ==================================
+scaler=StandardScaler()
+
+X_train=scaler.fit_transform(X_train)
+
+X_val=scaler.transform(X_val)
+
+X_test=scaler.transform(X_test)
+
+
+
+# ==================================
+# 9 MODELS
+# ==================================
+models={'Logistic':LogisticRegression(max_iter=1000),'SVM':SVC(kernel='linear',probability=True),'Naive Bayes':GaussianNB(),
+'KNN':KNeighborsClassifier(n_neighbors=5)}
+
+
+
+# ==================================
+# 10 VALIDATION
+# ==================================
+print("\nValidation Results\n")
+
+for name,model in models.items():
+
+    model.fit(X_train,y_train)
+
+    pred=model.predict(X_val)
+
+    print(name," Accuracy:",round(accuracy_score(y_val,pred),4)," F1:",round(f1_score(y_val,pred),4))
+
+
+
+# ==================================
+# 11 TEST RESULTS
+# ==================================
+results=[]
+
+print("\nFinal Test Results\n")
+
+for name,model in models.items():
+
+    pred=model.predict(X_test)
+
+    acc=accuracy_score(y_test,pred)
+
+    prec=precision_score(y_test,pred)
+
+    rec=recall_score(y_test,pred)
+
+    f1=f1_score(y_test,pred)
+
+    print(name,acc,prec,rec,f1)
+
+    results.append([name,acc,prec,rec,f1])
+
+
+
+# ==================================
+# 12 RESULT TABLE
+# ==================================
+result_df=pd.DataFrame(results,columns=['Model','Accuracy','Precision','Recall','F1'])
+
+print(result_df)
+
+
+
+# ==================================
+# 13 CONFUSION MATRIX
+# using best model SVM
+# ==================================
+svm=models['SVM']
+
+pred=svm.predict(X_test)
+
+cm=confusion_matrix(y_test,pred)
+
+print("\nConfusion Matrix\n")
+
+print(cm)
+
+
+
+# ==================================
+# 14 ROC CURVE
+# ==================================
+plt.figure()
+
+for name,model in models.items():
+
+    prob=model.predict_proba(X_test)[:,1]
+
+    fpr,tpr,_=roc_curve(y_test,prob)
+
+    roc_auc=auc(fpr,tpr)
+
+    plt.plot(fpr,tpr,label=name+" AUC="+str(round(roc_auc,3)))
+
+plt.plot([0,1],[0,1],'--')
+
+plt.legend()
+
+plt.title("ROC Comparison")
+
+plt.show()
+
+
+
+# ==================================
+# 15 BAR GRAPH
+# ==================================
+model_names=[]
+acc_scores=[]
+prec_scores=[]
+f1_scores=[]
+
+for row in results:
+
+    model_names.append(row[0])
+
+    acc_scores.append(row[1])
+
+    prec_scores.append(row[2])
+
+    f1_scores.append(row[4])
+
+
+x=np.arange(len(model_names))
+
+w=0.25
+
+plt.figure()
+
+plt.bar(x-w,acc_scores,w,label='Accuracy')
+
+plt.bar(x,prec_scores,w,label='Precision')
+
+plt.bar(x+w,f1_scores,w,label='F1')
+
+plt.xticks(x,model_names)
+
+plt.legend()
+
+plt.title(
+"Model Comparison"
+)
+
+plt.show()
