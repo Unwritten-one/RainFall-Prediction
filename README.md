@@ -23,12 +23,13 @@ The model is trained on historical rainfall and weather-related features to anal
 
 ## Key Features Considered
 
-* Historical Rainfall
-* Temperature
-* Humidity
-* Atmospheric Pressure
-* Wind Speed
-* Seasonal Indicators
+* State Name (Encoded)
+* Forecast Rainfall (RFS)
+* Normal Rainfall
+* Year
+* Month
+* Day
+* Seasonal Indicators (derived from month)
 
 ## Project Structure
 
